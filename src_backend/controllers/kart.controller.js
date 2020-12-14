@@ -1,13 +1,16 @@
 const kartService = require('../services/kart.service'); 
+const produtoService = require('../services/produto.service'); 
+
 
 const kartController = {
     create: async(req, res) => {
-      
-        const {ref, quantity} = req.body;
-        
-        const addedProduct = await kartService.create(ref, quantity);
+        console.log('Finalizando compra')
 
-        return res.json(addedProduct);
+        const products = req.body.products
+        for (const product of products) {
+            produtoService.updateStockById(product.id, product.quantity)
+        }
+        return res.status(200).json();
     },
 
     findById: async(req, res) => {
@@ -35,7 +38,7 @@ const kartController = {
 
     updateById: async(req, res) => {
         const id = req.params.id;
-
+        console.log('atualizando quantidade')
         const ref = req.body.ref;
         const quantity = req.body.quantity;
           

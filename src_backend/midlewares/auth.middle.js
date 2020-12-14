@@ -7,7 +7,7 @@ verifyToken = (req, res, next) => {
     return res.status(403).send({ message: "Não está autenticado" });
   }
 
-  jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, decoded) => {
+  jwt.verify(token, 'jwtsecret', (err, decoded) => {
     if (err) {
       return res.status(401).send({ message: "Token invalido" });
     }

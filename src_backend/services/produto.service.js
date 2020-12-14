@@ -28,7 +28,6 @@ const produtoService = {
     findById: async(id) => {
   
         const produto = await Produto.findOne({_id: id }).exec();
-        
         return produto;
     },
 
@@ -178,6 +177,22 @@ const produtoService = {
           
         const produto = await Produto.findOneAndUpdate({ _id: id}, {name, id_produto, preco_produto,unidades_estoque, unidades_vendidas, cor,tam_produto, categoria_produto, foto, descricao_produto, descricao_foto}, {new: true}); // returns Query; new : true retorna o novo objeto
           
+        return produto;
+    },
+
+    updateStockById: async(id, quantity) => {
+        
+        const produto = await Produto.findOne({ _id: id });
+        console.log(produto)
+        console.log(quantity)
+        stock = {
+            unidades_estoque: produto.unidades_estoque,
+            unidades_vendidas: produto.unidades_vendidas
+        }
+        stock.unidades_estoque -= quantity
+        stock.unidades_vendidas += quantity
+        const NewProduto = await Produto.findOneAndUpdate({ _id: id }, { unidades_estoque: stock.unidades_estoque, unidades_vendidas: stock.unidades_vendidas}, { new: true });
+        console.log(NewProduto)
         return produto;
     },
 
